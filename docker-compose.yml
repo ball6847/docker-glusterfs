@@ -1,13 +1,14 @@
 version: '2'
 
 services:
-  gluster:
+  gluster1:
     build: ./
     privileged: true
     volumes:
       - /volume:/volume
-  gluster2:
-    build: ./
-    privileged: true
-    volumes:
-      - /volume:/volume
+    #entrypoint: sh -c "while true; do sleep 2; done;"
+  # gluster2:
+  #   build: ./
+  #   privileged: true
+  #   volumes:
+  #     - /volume:/volume

@@ -1,0 +1,6 @@
+#!/usr/bin/with-contenv sh
+
+mkdir /var/run/sshd
+chmod 0755 /var/run/sshd
+
+exec /usr/sbin/sshd -D

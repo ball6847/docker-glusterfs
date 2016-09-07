@@ -1,0 +1,37 @@
+#!/usr/bin/with-contenv sh
+
+s6-svwait -u /etc/services.d/gluster
+
+# get all services ip
+# ssh to one of them and probe for peer
+
+SERVICE=gluster
+VOLUME=www
+
+# warning, container should be run in swarm mode only
+IP1="$(cat /etc/hosts | grep $HOSTNAME | awk '{ print $1 }' | sed -n 1p)"
+IP2="$(cat /etc/hosts | grep $HOSTNAME | awk '{ print $1 }' | sed -n 2p)"
+CLUSTER_NODES="$(dig +short tasks.$SERVICE | sed "/$IP1/d")"
+VOLUMEDIR="/volume/$HOSTNAME/$VOLUME"
+
+# --------------------------------------------------------
+
+# @TODO: need to check if this node is already in cluster, if not, then join node to the cluster
+
+# --------------------------------------------------------
+
+# empty cluster, initialize volume
+if [[ "$CLUSTER_NODES" == "" ]]; then
+    sleep 2
+else
+    # total number of tasks in service
+    REPLICA="$(expr $(echo $CLUSTER_NODES | wc -l) + 1)"
+
+    # always use first node as cluster manager, wait 'till it boot up
+    PRIMARY="$(echo $CLUSTER_NODES | sed -n 1p)"
+
+    ssh $PRIMARY sh -c "mkdir -p $VOLUMEDIR && gluster peer probe $IP && gluster volume add-brick $VOLUME replica $REPLICA $IP:$VOLUMEDIR"
+fi
+
+
+exit 0

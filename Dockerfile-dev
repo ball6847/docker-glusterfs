@@ -3,3 +3,10 @@ FROM ball6847/gluster:base
 MAINTAINER Porawit Poboonma <ball6847@gmail.com>
 
 ADD services.d /etc/services.d
+#ADD hosts.allow /etc/hosts.allow
+#ADD hosts.deny /etc/hosts.deny
+
+RUN useradd -ms /bin/bash gluster && \
+    mkdir -p /home/gluster/.ssh/ && \
+    ssh-keygen -b 2048 -t rsa -f /home/gluster/.ssh/id_rsa -q -N "" && \
+    cat /home/gluster/.ssh/id_rsa.pub > /home/gluster/.ssh/authorized_keys

@@ -1,0 +1,5 @@
+#FROM ubuntu:16.04
+FROM ball6847/gluster:base
+MAINTAINER Porawit Poboonma <ball6847@gmail.com>
+
+ADD services.d /etc/services.d

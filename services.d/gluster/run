@@ -1,3 +1,5 @@
 #!/usr/bin/with-contenv sh
 
+chown -R gluster:gluster /var/log/glusterfs
+
 exec /usr/sbin/glusterd -N

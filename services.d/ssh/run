@@ -5,15 +5,12 @@ chmod 0755 /var/run/sshd
 
 chmod 600 /home/gluster/.ssh/id_rsa
 chmod 600 /home/gluster/.ssh/authorized_keys
+chown gluster:gluster /home/gluster/.ssh/id_rsa /home/gluster/.ssh/authorized_keys
 
-# 1. ssh user should not be root, and is the only one in system, "gluster" is a good one.
-# 2. ssh user should not be a sudoer
-# 3. only one command to run is "gluster"
-
-    #-o PasswordAuthentication=no \
-    #-o PermitRootLogin=no \
-    #-o PermitTTY=no \
-    #-o AuthenticationMethods=publickey \
-    #-o AllowUsers=gluster \
 exec /usr/sbin/sshd -D \
-    -o AuthorizedKeysFile=%h/.ssh/authorized_keys
+    -o PermitTTY=no \
+    -o AllowUsers=gluster \
+    -o AuthenticationMethods=publickey \
+    -o AuthorizedKeysFile=/home/gluster/.ssh/authorized_keys \
+    -o PasswordAuthentication=no \
+    -o PermitRootLogin=no

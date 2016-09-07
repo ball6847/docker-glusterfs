@@ -20,9 +20,12 @@ VOLUMEDIR="/volume/$HOSTNAME/$VOLUME"
 
 # --------------------------------------------------------
 
+# create volume dir if neccessary
+mkdir -p $VOLUMEDIR
+
 # empty cluster, initialize volume
 if [[ "$CLUSTER_NODES" == "" ]]; then
-    sleep 2
+    gluster volume create $VOLUME $IP1:$VOLUMEDIR force
 else
     # total number of tasks in service
     REPLICA="$(expr $(echo $CLUSTER_NODES | wc -l) + 1)"
@@ -30,7 +33,9 @@ else
     # always use first node as cluster manager, wait 'till it boot up
     PRIMARY="$(echo $CLUSTER_NODES | sed -n 1p)"
 
-    ssh $PRIMARY sh -c "mkdir -p $VOLUMEDIR && gluster peer probe $IP && gluster volume add-brick $VOLUME replica $REPLICA $IP:$VOLUMEDIR"
+
+    # add this node to cluster
+    ssh -o StrictHostKeyChecking=no gluster@$PRIMARY sh -c "gluster peer probe $IP && gluster volume add-brick $VOLUME replica $REPLICA $IP1:$VOLUMEDIR force"
 fi
 
 

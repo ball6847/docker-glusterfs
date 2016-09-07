@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build -f Dockerfile -t ball6847/gluster:base .
+docker build -t ball6847/gluster:base .

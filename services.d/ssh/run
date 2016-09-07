@@ -3,4 +3,10 @@
 mkdir /var/run/sshd
 chmod 0755 /var/run/sshd
 
+
+
+# 1. ssh user should not be root, and is the only one in system, "gluster" is a good one.
+# 2. ssh user should not be a sudoer
+# 3. only one command to run is "gluster"
+
 exec /usr/sbin/sshd -D

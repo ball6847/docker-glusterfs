@@ -1,14 +1,10 @@
 version: '2'
 
 services:
-  gluster1:
-    build: ./
+  gluster:
+    image: ball6847/gluster:dev
     privileged: true
     volumes:
       - /volume:/volume
-    #entrypoint: sh -c "while true; do sleep 2; done;"
-  # gluster2:
-  #   build: ./
-  #   privileged: true
-  #   volumes:
-  #     - /volume:/volume
+    networks:
+      - gluster

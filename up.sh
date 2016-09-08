@@ -5,3 +5,5 @@ docker service create \
     --network gluster \
     --mount type=bind,source=/volume,target=/volume \
     ball6847/gluster:dev
+
+

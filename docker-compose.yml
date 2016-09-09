@@ -3,8 +3,6 @@ version: '2'
 services:
   gluster:
     image: ball6847/gluster:dev
-    privileged: true
+    #privileged: true
     volumes:
       - /volume:/volume
-    networks:
-      - gluster
